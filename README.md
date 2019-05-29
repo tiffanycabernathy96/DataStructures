@@ -2,5 +2,5 @@
 Implementation of various data structures 
 
 
-# Currently Implemented Data Structures
--Doubly Linked List
+## Currently Implemented Data Structures
+-Double Linked List
