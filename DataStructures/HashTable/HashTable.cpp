@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-//From what I read using a prime number not to close to a multiple of 2 decreases changes of collision when using mod by table size for hash function. 
+//From what I read using a prime number not to close to a multiple of 2 decreases changes of collision when using mod by table size for hash function.
 const int TABLESIZE = 211;
 
 HashTableItem::HashTableItem(int key, int value) {
@@ -55,7 +55,7 @@ void HashTable::insert(int key, int value) {
 }
 int HashTable::search(int key) {
     int hashKey = hashFunction(key);
-    
+
     if (hashTable[hashKey] == NULL) {
         cout << "Error - Item does not exist" << endl;
         return -1;
