@@ -9,7 +9,7 @@ public:
 class LinkedList
 {
 public:
-	
+
 	LinkedList();
 	~LinkedList();
 
