@@ -1,4 +1,5 @@
 //Tiffany Abernathy - Hash Table Implementation 
+//Collisions Handling - Chaining with a Single Linked List
 #include "HashTable.h"
 #include <iostream>
 using namespace std;
