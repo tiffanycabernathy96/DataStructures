@@ -400,7 +400,7 @@ int main()
 
     //cout << "Removing 55" << endl;
     //tree.remove(55);
-    //tree.printTree();
+    //(tree.printTree();
 
     cout << "Inserting 62, 63, 80, 1" << endl;
     tree.insert(62);

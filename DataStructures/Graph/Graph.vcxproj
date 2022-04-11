@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dad4b72d-b5f5-4ce9-82ad-0aeff0de6e4c}</ProjectGuid>
-    <RootNamespace>RedBlackTree</RootNamespace>
+    <ProjectGuid>{81824a09-5a20-42b2-84de-ea2da81869b7}</ProjectGuid>
+    <RootNamespace>Graph</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,10 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RedBlackTree.cpp" />
+    <ClCompile Include="AdjacencyList.cpp" />
+    <ClCompile Include="AdjacencyMatrix.cpp" />
+    <ClCompile Include="EdgeList.cpp" />
+    <ClCompile Include="Graph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RedBlackTree.h" />
+    <ClInclude Include="AdjacencyList.h" />
+    <ClInclude Include="AdjacencyMatrix.h" />
+    <ClInclude Include="EdgeList.h" />
+    <ClInclude Include="Graph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
