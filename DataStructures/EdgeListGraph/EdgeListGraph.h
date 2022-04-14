@@ -2,11 +2,10 @@
 #include "Graph.h"
 
 class EdgeListGraph : public Graph {
-	Edge **edges;
-	Node **nodes;
-	int nEdges;
+	Edge** edges;
+	Node** nodes;
 public:
-	EdgeListGraph(Node nodes[], Edge edges[], int numEdges);
+	EdgeListGraph(Node nodes[], Edge edges[]);
 	~EdgeListGraph();
 
 	void addEdge(Edge* edge);

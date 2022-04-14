@@ -10,7 +10,8 @@ struct TreeNode {
 	TreeNode* right;
 	TreeNode(int data, bool color);
 };
-class RedBlackTree {
+#include "Tree.h"
+class RedBlackTree: public Tree {
 private:
 	TreeNode* root;
 	TreeNode* NIL;

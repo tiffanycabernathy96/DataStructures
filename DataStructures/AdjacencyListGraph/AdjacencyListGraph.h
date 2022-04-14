@@ -1,12 +1,12 @@
 #pragma once
 #include "Graph.h"
 
-class AdjacencyList : public Graph {
+class AdjacencyListGraph : public Graph {
 
 
 public:
-	AdjacencyList(Node nodes[], Edge edges[], int numEdges);
-	~AdjacencyList();
+	AdjacencyListGraph(Node nodes[], Edge edges[]);
+	~AdjacencyListGraph();
 
 	void addEdge(Edge* edge);
 	void deleteEdge(Edge* edge);

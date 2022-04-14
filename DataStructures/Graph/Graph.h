@@ -14,7 +14,10 @@ struct Node {
 	Node();
 };
 
-const int NUMNODES = 5;
+const Node NODES[] = { Node(0), Node(1), Node(2), Node(3), Node(4) };
+const Edge EDGES[] = { Edge(0, 1, 5), Edge(1, 3, 10), Edge(1, 0, 6), Edge(2, 4, 8), Edge(3, 2, 1) };
+const int NUMNODES = sizeof(NODES) / sizeof(NODES[0]);
+const int NUMEDGES = sizeof(EDGES) / sizeof(EDGES[0]);
 
 class Graph {
 	
