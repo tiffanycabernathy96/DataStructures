@@ -13,6 +13,7 @@ struct TreeNode {
 class RedBlackTree {
 private:
 	TreeNode* root;
+	TreeNode* NIL;
 	void deleteTree(TreeNode* node);
 
 	void insertRebalance(TreeNode* node);

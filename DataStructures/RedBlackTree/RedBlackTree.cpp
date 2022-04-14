@@ -9,10 +9,9 @@ TreeNode::TreeNode(int data=NULL, bool color=false) {
     this->right = nullptr;
     this->parent = nullptr;
 }
-
 //Private Functions
 void RedBlackTree::deleteTree(TreeNode* node) {
-    if (node) {
+    if (node != NIL) {
         deleteTree(node->left);
         deleteTree(node->right);
         delete node;
@@ -20,10 +19,10 @@ void RedBlackTree::deleteTree(TreeNode* node) {
 }
 void RedBlackTree::insertRebalance(TreeNode* node) {
     TreeNode* temp;
-    while (node->parent->color == true) {
+    while (node->parent->color) {
         if (node->parent == node->parent->parent->right) {
             temp = node->parent->parent->left;
-            if (temp->color == true) {
+            if (temp->color) {
                 temp->color = false;
                 node->parent->color = false;
                 node->parent->parent->color = true;
@@ -41,7 +40,7 @@ void RedBlackTree::insertRebalance(TreeNode* node) {
         }
         else {
             temp = node->parent->parent->right;
-            if (temp->color == true) {
+            if (temp->color) {
                 temp->color = false;
                 node->parent->color = false;
                 node->parent->parent->color = true;
@@ -101,12 +100,12 @@ void RedBlackTree::deleteRebalance(TreeNode* node) {
                 temp = node->parent->left;
             }
 
-            if ((!temp->left && !temp->right) || (!temp->left->color && !temp->right->color)) {
+            if (!temp->left->color && !temp->right->color) {
                 temp->color = true;
                 node = node->parent;
             }
             else {
-                if (!temp->left || !temp->left->color) {
+                if (!temp->left->color) {
                     temp->right->color = false;
                     temp->color = true;
                     leftRotate(temp);
@@ -134,14 +133,14 @@ void RedBlackTree::replace(TreeNode* oldN, TreeNode* newN) {
     newN->parent = oldN->parent;
 }
 TreeNode* RedBlackTree::searchTreeR(TreeNode* node, int data) {
-    if(!node || data == node->data)
+    if(node == NIL || data == node->data)
         return node;
     if (data < node->data)
         return searchTreeR(node->left, data);
     return searchTreeR(node->right, data);
 }
 void RedBlackTree::printR(TreeNode* node, string indent, bool last) {
-    if (node) {
+    if (node != NIL) {
         cout << indent;
         if (last) {
             cout << "R----";
@@ -160,7 +159,8 @@ void RedBlackTree::printR(TreeNode* node, string indent, bool last) {
 
 //Public Functions
 RedBlackTree::RedBlackTree() {
-    root = nullptr;
+    NIL = new TreeNode();
+    root = NIL;
 }
 RedBlackTree::~RedBlackTree() {
     deleteTree(root);
@@ -172,14 +172,14 @@ TreeNode* RedBlackTree::getRoot() {
 
 TreeNode* RedBlackTree::minimum(TreeNode* node) {
     TreeNode* temp = node;
-    while (temp->left) {
+    while (temp->left != NIL) {
         temp = temp->left;
     }
     return temp;
 }
 TreeNode* RedBlackTree::maximum(TreeNode* node) {
     TreeNode* temp = node;
-    while (temp->right) {
+    while (temp->right != NIL) {
         temp = temp->right;
     }
     return temp;
@@ -192,7 +192,7 @@ void RedBlackTree::leftRotate(TreeNode* node) {
     node->right = rNode->left;
 
     //If rNodes left child is not null, set it's parent to node
-    if (rNode->left)
+    if (rNode->left != NIL)
         rNode->left->parent = node;
     //rNode is now in nodes old spot so set rNode to node's parent. 
     rNode->parent = node->parent;
@@ -218,7 +218,7 @@ void RedBlackTree::rightRotate(TreeNode* node) {
     node->left = lNode->right;
 
     //lNode's right child is not null, set it's parent to node
-    if (lNode->right)
+    if (lNode->right != NIL)
         lNode->right->parent = node;
     //lNode is now in nodes old spot so set lNode to node's parent.
     lNode->parent = node->parent;
@@ -240,11 +240,13 @@ void RedBlackTree::rightRotate(TreeNode* node) {
 void RedBlackTree::insert(int data) {
     //Create the new node with the data and it is red so true
     TreeNode* newNode = new TreeNode(data, true);
+    newNode->left = NIL;
+    newNode->right = NIL;
     //Place the new node in the tree where it should be based on value
     TreeNode* parentNode = nullptr;
     TreeNode* temp = this->root;
 
-    while (temp) {
+    while (temp != NIL) {
         parentNode = temp;
         if (data < temp->data)
             temp = temp->left;
@@ -275,9 +277,7 @@ void RedBlackTree::insert(int data) {
     insertRebalance(newNode);
 }
 void RedBlackTree::remove(int data) {
-    //TODO Fix this. Currently this does not rebalance properly. However, delete is very complex and I feel I have spent
-    //To much time on it anyway for it to likely not be included in the interviews. 
-    TreeNode* removedN, *temp1, *temp2;
+    TreeNode* removedN = NIL, *temp1, *temp2;
 
     //Find the node in the tree
     removedN = searchTreeR(this->root, data);
@@ -293,23 +293,20 @@ void RedBlackTree::remove(int data) {
     bool temp1Color = temp1->color;
 
     //There is only a right child or no children
-    if (!removedN->left) {
+    if (removedN->left == NIL) {
         temp2 = removedN->right;
         replace(removedN, removedN->right);
     }
     //There is only a left child
-    else if (!removedN->right) {
+    else if (removedN->right == NIL) {
         temp2 = removedN->left;
         replace(removedN, removedN->left);
     }
     //There is a right and left child
     else {
-        temp1 = minimum(removedN->right);
+        temp1 = maximum(removedN->left);
         temp1Color = temp1->color;
         temp2 = temp1->right;
-        if (!temp2) {
-            temp2 = new TreeNode();
-        }
         if (temp1->parent == removedN)
             temp2->parent = temp1;
         else {
@@ -326,14 +323,14 @@ void RedBlackTree::remove(int data) {
     //Can safely delete the node now
     delete removedN;
     //Fix the tree is needed
-    if (!temp1Color && temp2)
+    if (!temp1Color)
         deleteRebalance(temp2);
 }
 
 //DFS Traversals
 void RedBlackTree::printPreOrder(TreeNode* node) {
     //Root - Left - Right
-    if (node) {
+    if (node != NIL) {
         cout << node->data << " ";
         printPreOrder(node->left);
         printPreOrder(node->right);
@@ -341,7 +338,7 @@ void RedBlackTree::printPreOrder(TreeNode* node) {
 }
 void RedBlackTree::printInOrder(TreeNode* node) {
     //Left - Root - Right
-    if (node) {
+    if (node != NIL) {
         printInOrder(node->left);
         cout << node->data << " ";
         printInOrder(node->right);
@@ -349,7 +346,7 @@ void RedBlackTree::printInOrder(TreeNode* node) {
 }
 void RedBlackTree::printPostOrder(TreeNode* node) {
     //Left - Right - Root
-    if (node) {
+    if (node != NIL) {
         printPostOrder(node->left);
         printPostOrder(node->right);
         cout << node->data << " ";
@@ -366,10 +363,10 @@ void RedBlackTree::printLevelOrder(TreeNode* node) {
         TreeNode* temp = q.front();
         cout << temp->data << " ";
         q.pop();
-        if (temp->left) {
+        if (temp->left != NIL) {
             q.push(temp->left);
         }
-        if (temp->right) {
+        if (temp->right != NIL) {
             q.push(temp->right);
         }
     }
@@ -398,9 +395,9 @@ int main()
     tree.insert(10);
     tree.printTree();
 
-    //cout << "Removing 55" << endl;
-    //tree.remove(55);
-    //(tree.printTree();
+    cout << "Removing 55" << endl;
+    tree.remove(55);
+    tree.printTree();
 
     cout << "Inserting 62, 63, 80, 1" << endl;
     tree.insert(62);
@@ -408,4 +405,17 @@ int main()
     tree.insert(80);
     tree.insert(1);
     tree.printTree();
+
+    cout << "Level Order: ";
+    tree.printLevelOrder(tree.getRoot());
+    cout << endl;
+    cout << "In Order: ";
+    tree.printInOrder(tree.getRoot());
+    cout << endl;
+    cout << "Pre Order: ";
+    tree.printPreOrder(tree.getRoot());
+    cout << endl;
+    cout << "Post Order: ";
+    tree.printPostOrder(tree.getRoot());
+    cout << endl;
 }

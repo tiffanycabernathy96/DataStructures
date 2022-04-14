@@ -16,13 +16,6 @@ void AdjacencyMatrix::deleteEdge(Edge* edge) {
 
 }
 
-void AdjacencyMatrix::addNode(Node* node) {
-
-}
-void AdjacencyMatrix::deleteNode(Node* node) {
-
-}
-
 void AdjacencyMatrix::print() {
 
 }

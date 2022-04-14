@@ -26,8 +26,8 @@ int main()
     int numNodes = sizeof(nodes) / sizeof(nodes[0]);
     int numEdges = sizeof(edges) / sizeof(edges[0]);
     
-    EdgeListGraph edgeList = EdgeListGraph(nodes, edges, numNodes, numEdges);
-    edgeList.print();
-    
+    //EdgeListGraph edgeList = EdgeListGraph(nodes, edges, numNodes, numEdges);
+    //edgeList.print();
+   
 }
 
