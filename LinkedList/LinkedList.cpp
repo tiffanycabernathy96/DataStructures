@@ -140,3 +140,7 @@ void LinkedList::display()
 	}
 	std::cout << std::endl;
 }
+int main()
+{
+
+}

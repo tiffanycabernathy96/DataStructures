@@ -1,11 +1,26 @@
 #pragma once
 #include "Graph.h"
+const int NUMNODES=5;
+
+struct Edge {
+	int start, end, weight;
+	Edge(int start, int end, int weight);
+	Edge();
+};
+
+struct Node {
+	int name;
+	Node(int name);
+	Node();
+};
 
 class AdjacencyMatrixGraph : public Graph {
-	int adjMatrix[NUMNODES][NUMNODES];
+	
+private:
+	//int adjMatrix[NUMNODES][NUMNODES];
 
 public:
-	AdjacencyMatrixGraph(Node nodes[], Edge edges[]);
+	AdjacencyMatrixGraph();
 	~AdjacencyMatrixGraph();
 
 	void addEdge(Edge* edge);
