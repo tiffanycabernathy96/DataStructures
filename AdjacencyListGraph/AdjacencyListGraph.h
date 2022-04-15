@@ -1,5 +1,4 @@
 #pragma once
-#include "Graph.h"
 
 struct Edge {
 	int start, end, weight;
@@ -13,7 +12,7 @@ struct Node {
 	Node();
 };
 
-class AdjacencyListGraph : public Graph {
+class AdjacencyListGraph{
 
 
 public:

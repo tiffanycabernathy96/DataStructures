@@ -1,5 +1,4 @@
 #pragma once
-#include "Graph.h"
 const int NUMNODES=5;
 
 struct Edge {
@@ -14,7 +13,7 @@ struct Node {
 	Node();
 };
 
-class AdjacencyMatrixGraph : public Graph {
+class AdjacencyMatrixGraph {
 	
 private:
 	//int adjMatrix[NUMNODES][NUMNODES];

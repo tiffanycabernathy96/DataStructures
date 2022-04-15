@@ -1,19 +1,7 @@
 #pragma once
 #include "Graph.h"
 
-struct Edge {
-	int start, end, weight;
-	Edge(int start, int end, int weight);
-	Edge();
-};
-
-struct Node {
-	int name;
-	Node(int name);
-	Node();
-};
-
-class EdgeListGraph : public Graph {
+class EdgeListGraph{
 	Edge** edges;
 	Node** nodes;
 	int numNodes;
@@ -22,13 +10,14 @@ public:
 	EdgeListGraph(Node *iNodes, Edge *iEdges, int iNumNodes, int iNumEdges);
 	~EdgeListGraph();
 
-	void addNode(Node* node);
-	void deleteNode(Node* node);
+	void addNode(int node);
+	void deleteNode(int node);
 
 	void addEdge(Edge* edge);
 	void deleteEdge(Edge* edge);
+	void deleteEdges(int node);
 
-	void print(Node*);
+	void printByNodes();
 
 	void print();
 };

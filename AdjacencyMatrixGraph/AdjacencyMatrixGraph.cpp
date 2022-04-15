@@ -1,5 +1,7 @@
 //Tiffany Abernathy - Implementation of Adjacency Matrix Graph
 #include "AdjacencyMatrixGraph.h"
+#include <iostream>
+using namespace std;
 
 Edge::Edge(int start, int end, int weight) {
 	this->start = start;

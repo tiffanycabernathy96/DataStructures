@@ -1,100 +1,142 @@
 //Tiffany Abernathy - Implementation of Edge List Graph Using Arrays
-#include "Graph.h"
 #include "EdgeListGraph.h"
-
-Edge::Edge(int start, int end, int weight) {
-	this->start = start;
-	this->end = end;
-	this->weight = weight;
-}
-Edge::Edge() {
-	this->start = -1;
-	this->end = -1;
-	this->weight = -1;
-}
-Node::Node(int name) {
-	this->name = name;
-}
-Node::Node() {
-	this->name = -1;
-}
+#include <iostream>
+using namespace std;
 
 EdgeListGraph::EdgeListGraph(Node *iNodes, Edge *iEdges, int iNumNodes, int iNumEdges) {
-	this->numNodes = iNumNodes;
-	this->numEdges = iNumEdges;
-	this->nodes = new Node * [numNodes]();
-	this->edges = new Edge * [numEdges]();
+	numNodes = iNumNodes;
+	numEdges = iNumEdges;
+	nodes = new Node * [numNodes]();
+	edges = new Edge * [numEdges]();
 	for (int i = 0; i < numNodes; i++) {
-		this->nodes[i] = new Node(iNodes[i].name);
+		nodes[i] = new Node(iNodes[i].name);
 	}
 	for (int i = 0; i < numEdges; i++) {
-		this->edges[i] = new Edge(iEdges[i].start, iEdges[i].end, iEdges[i].weight);
+		edges[i] = new Edge(iEdges[i].start, iEdges[i].end, iEdges[i].weight);
 	}
 }
 EdgeListGraph::~EdgeListGraph() {
-
+	for (int i = 0; i < numNodes; i++)
+		delete nodes[i];
+	delete[] nodes;
+	for (int i = 0; i < numEdges; i++) 
+		delete edges[i];
+	delete[] edges;
 }
 
-void EdgeListGraph::addNode(Node* node) {
+void EdgeListGraph::addNode(int node) {
 	Node** tempNodes = new Node * [numNodes+1]();
 	for (int i = 0; i < numNodes; i++) {
-		tempNodes[i] = this->nodes[i];
+		tempNodes[i] = nodes[i];
 	}
-	tempNodes[numNodes] = node;
+	tempNodes[numNodes] = new Node(node);
 	numNodes++;
-	delete []this->nodes;
-	this->nodes = tempNodes;
+	delete[] nodes;
+	nodes = tempNodes;
 }
-void EdgeListGraph::deleteNode(Node* node) {
-
+void EdgeListGraph::deleteNode(int node) {
+	numNodes--;
+	Node** tempNodes = new Node * [numNodes]();
+	int index = 0;
+	for (int i = 0; i < numNodes+1; i++) {
+		if (nodes[i]->name != node) {
+			tempNodes[index] = nodes[i];
+			index++;
+		}
+		else
+			delete nodes[i];
+	}
+	delete[] nodes;
+	nodes = tempNodes;
+	deleteEdges(node);
 }
 
 void EdgeListGraph::addEdge(Edge* edge) {
 	Edge** tempEdges = new Edge * [numEdges + 1]();
 	for (int i = 0; i < numEdges; i++) {
-		tempEdges[i] = this->edges[i];
+		tempEdges[i] = edges[i];
 	}
 	tempEdges[numEdges] = edge;
 	numEdges++;
-	delete[]this->edges;
-	this->edges = tempEdges;
-
+	delete[] edges;
+	edges = tempEdges;
 }
 void EdgeListGraph::deleteEdge(Edge* edge) {
-
+	numEdges--;
+	Edge** tempEdges = new Edge * [numEdges]();
+	int index = 0;
+	for (int i = 0; i < numEdges+1; i++) {
+		if (edges[i] != edge) {
+			tempEdges[index] = edges[i];
+			index++;
+		}
+		else
+			delete edges[i];
+	}
+	delete[] edges;
+	edges = tempEdges;
+}
+void EdgeListGraph::deleteEdges(int node) {
+	int numEdgesToDelete = 0;
+	int currentIndex = 0;
+	int* indexesToKeep = new int[numEdges];
+	for (int i = 0; i < numEdges; i++) {
+		if (edges[i]->start == node || edges[i]->end == node) {
+			numEdgesToDelete++;
+			delete edges[i];
+		}
+		else {
+			indexesToKeep[currentIndex] = i;
+			currentIndex++;
+		}
+	}
+	int newNumEdges = numEdges - numEdgesToDelete;
+	Edge** tempEdges = new Edge * [newNumEdges];
+	for (int i = 0; i < currentIndex; i++) {
+		tempEdges[i] = edges[indexesToKeep[i]];
+	}
+	numEdges = newNumEdges;
+	delete[] edges;
+	edges = tempEdges;
 }
 
-void EdgeListGraph::print(Node* node) {
-	cout << "Edges from Node " << node->name << endl;
-	for (int i = 0; i < numEdges; i++) {
-		if(edges[i]->start == node->name)
-			cout << "Start: " << edges[i]->start << " End: " << edges[i]->end << " Weight: " << edges[i]->weight << endl;
+void EdgeListGraph::printByNodes() {
+	cout << "Graph Edges by Node: " << endl;
+	for (int i = 0; i < numNodes; i++) {
+		cout << "Edges from Node " << nodes[i]->name << endl;
+		for (int j = 0; j < numEdges; j++) {
+			if (edges[j]->start == nodes[i]->name)
+				cout << "Start: " << edges[j]->start << " End: " << edges[j]->end << " Weight: " << edges[j]->weight << endl;
+		}
 	}
 }
 
 void EdgeListGraph::print() {
-	cout << "Graph: " << endl;
-	for (int i = 0; i < numNodes; i++) {
-		print(nodes[i]);
+	cout << "Graph Edges: " << endl;
+	for (int i = 0; i < numEdges; i++) {
+		cout << "Start: " << edges[i]->start << " End: " << edges[i]->end << " Weight: " << edges[i]->weight << endl;
 	}
-	//for (int i = 0; i < numEdges; i++) {
-	//	cout << "Start: " << edges[i]->start << " End: " << edges[i]->end << " Weight: " << edges[i]->weight << endl;
-	//}
 	cout << endl;
 }
 
-int main()
+/*int main()
 {
 	cout << "Adding Nodes 0 through 4" << endl;
 	Node nodes[] = { Node(0), Node(1), Node(2), Node(3), Node(4) };
 	cout << "Adding Starting Edges" << endl;
 	Edge edges[] = { Edge(0, 1, 5), Edge(1, 3, 10), Edge(1, 0, 6), Edge(2, 4, 8), Edge(3, 2, 1) };
 	EdgeListGraph graph(nodes, edges, 5, 5);
-	graph.print();
+	graph.printByNodes();
 	cout << "Adding Node 5" << endl;
-	graph.addNode(new Node(5));
-	graph.print();
+	graph.addNode(5);
+	graph.printByNodes();
 	cout << "Adding Edge 5, 2 with weight 7" << endl;
 	graph.addEdge(new Edge(5, 2, 7));
+	graph.printByNodes();
+	cout << "Deleting Node 1 and corresponding Edges" << endl;
+	cout << "Edges before Deletion" << endl;
 	graph.print();
-}
+	graph.deleteNode(1);
+	cout << "Edges after Deletion" << endl;
+	graph.print();
+}*/
