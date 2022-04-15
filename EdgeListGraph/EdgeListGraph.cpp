@@ -1,4 +1,4 @@
-//Tiffany Abernathy - Implementation of Edge List Graph Using Arrays
+//Tiffany Abernathy - Implementation of Edge List Graph Using Arrays. Directed and Weighted. 
 #include "EdgeListGraph.h"
 #include <iostream>
 using namespace std;

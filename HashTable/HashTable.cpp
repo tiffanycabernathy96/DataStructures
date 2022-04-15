@@ -1,4 +1,4 @@
-//Tiffany Abernathy - Hash Table Implementation 
+//Tiffany Abernathy - Hash Table Implementation Using Arrays
 //Collisions Handling - Chaining with a Single Linked List
 #include "HashTable.h"
 #include <iostream>

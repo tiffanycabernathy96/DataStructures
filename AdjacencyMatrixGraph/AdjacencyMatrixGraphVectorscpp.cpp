@@ -1,27 +1,22 @@
-//Tiffany Abernathy - Implementation of Adjacency Matrix Graph Using Arrays. Directed and Weighted. 
-#include "AdjacencyMatrixGraph.h"
+//Tiffany Abernathy - Implementation of Adjacency Matrix Graph Using Vectors. Directed and Weighted. 
+#include "AdjacencyMatrixGraphVectors.h"
 #include <iostream>
 using namespace std;
 
 //Public Fuctions
-AdjacencyMatrixGraph::AdjacencyMatrixGraph(int iVertices) {
+AdjacencyMatrixGraphVectors::AdjacencyMatrixGraphVectors(int iVertices) {
     numVertices = iVertices;
-    adjMatrix = new int*[numVertices];
-    for (int i = 0; i < numVertices; i++)
-        adjMatrix[i] = new int[numVertices];
+    adjMatrix = vector<vector<int>>();
     for (int i = 0; i < numVertices; i++) {
         for (int j = 0; j < numVertices; j++)
             adjMatrix[i][j] = -1;
     }
 }
-AdjacencyMatrixGraph::~AdjacencyMatrixGraph() {
-    for (int i = 0; i < numVertices; i++) {
-        delete[] adjMatrix[i];
-    }
-    delete[] adjMatrix;
+AdjacencyMatrixGraphVectors::~AdjacencyMatrixGraphVectors() {
+    
 }
 
-void AdjacencyMatrixGraph::addEdge(Edge iEdge) {
+void AdjacencyMatrixGraphVectors::addEdge(Edge iEdge) {
     if (iEdge.start >= 0 && iEdge.end < numVertices) {
         adjMatrix[iEdge.start][iEdge.end] = iEdge.weight;
         cout << "Edge Created From " << iEdge.start << " To " << iEdge.end << " Weighing " << iEdge.weight << endl;
@@ -29,7 +24,7 @@ void AdjacencyMatrixGraph::addEdge(Edge iEdge) {
     else
         cout << "Invalid Edge" << endl;
 }
-void AdjacencyMatrixGraph::deleteEdge(Edge iEdge) {
+void AdjacencyMatrixGraphVectors::deleteEdge(Edge iEdge) {
     if (iEdge.start >= 0 && iEdge.end < numVertices) {
         adjMatrix[iEdge.start][iEdge.end] = -1;
         cout << "Edge Deleted From " << iEdge.start << " To " << iEdge.end << " Weighing " << iEdge.weight << endl;
@@ -37,7 +32,7 @@ void AdjacencyMatrixGraph::deleteEdge(Edge iEdge) {
     else
         cout << "Invalid Edge" << endl;
 }
-void AdjacencyMatrixGraph::printMatrix() {
+void AdjacencyMatrixGraphVectors::printMatrix() {
     cout << "Graph: " << endl;
     cout << "    ";
     for (int i = 0; i < numVertices; i++)
@@ -49,7 +44,7 @@ void AdjacencyMatrixGraph::printMatrix() {
         cout << "____";
     cout << endl;
     for (int i = 0; i < numVertices; i++) {
-        cout <<"  " << i << "|";
+        cout << "  " << i << "|";
         for (int j = 0; j < numVertices; j++) {
             if (adjMatrix[i][j] != -1) {
                 cout << " " << adjMatrix[i][j] << "|";
@@ -64,7 +59,7 @@ void AdjacencyMatrixGraph::printMatrix() {
     for (int i = 0; i < numVertices; i++)
         cout << "____";
 }
-void AdjacencyMatrixGraph::print() {
+void AdjacencyMatrixGraphVectors::print() {
     cout << "Graph: " << endl;
     for (int i = 0; i < numVertices; i++) {
         for (int j = 0; j < numVertices; j++) {
@@ -75,9 +70,9 @@ void AdjacencyMatrixGraph::print() {
         cout << endl;
     }
 }
-int main()
+/*int main()
 {
-    AdjacencyMatrixGraph graph(5);
+    AdjacencyMatrixGraphVectors graph(5);
 
     graph.addEdge(Edge(0, 0, 10));
     graph.addEdge(Edge(0, 4, 10));
@@ -91,4 +86,4 @@ int main()
 
     graph.print();
     graph.printMatrix();
-}
+}*/
