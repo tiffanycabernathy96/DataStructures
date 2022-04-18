@@ -9,8 +9,8 @@ public:
 	AdjacencyListGraph(int iNumVertices);
 	~AdjacencyListGraph();
 
-	void addEdge(Edge* edge);
-	void deleteEdge(Edge* edge);
+	void addEdge(int start, int end, int weight);
+	void deleteEdge(int start, int end, int weight);
 
 	void print();
 };

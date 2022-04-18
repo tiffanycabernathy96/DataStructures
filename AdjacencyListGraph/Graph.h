@@ -1,8 +1,10 @@
 #pragma once
+struct Node;
 struct Edge {
-	Node *start, *end;
+	Node *end;
 	int weight;
-	Edge(Node* start, Node* end, int weight);
+	Edge* next;
+	Edge(Node* end, int weight);
 	Edge();
 	bool operator==(const Edge* iEdge);
 };

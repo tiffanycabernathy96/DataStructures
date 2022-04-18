@@ -1,20 +1,20 @@
 #include "Graph.h"
 
-Edge::Edge(Node* iStart, Node* iEnd, int iWeight) {
-	start = iStart;
+Edge::Edge(Node* iEnd, int iWeight) {
 	end = iEnd;
 	weight = iWeight;
+	next = nullptr;
 }
 bool Edge::operator == (const Edge* iEdge) {
-	if (start == iEdge->start && end == iEdge->end && weight == iEdge->weight)
+	if (end == iEdge->end && weight == iEdge->weight && next == iEdge->next)
 		return true;
 	else
 		return false;
 }
 Edge::Edge() {
-	start = nullptr;
 	end = nullptr;
 	weight = -1;
+	next = nullptr;
 }
 Node::Node(int iName) {
 	name = iName;
