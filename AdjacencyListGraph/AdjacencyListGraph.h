@@ -1,22 +1,12 @@
 #pragma once
-
-struct Edge {
-	int start, end, weight;
-	Edge(int start, int end, int weight);
-	Edge();
-};
-
-struct Node {
-	int name;
-	Node(int name);
-	Node();
-};
+#include "Graph.h"
 
 class AdjacencyListGraph{
-
+	int numVerticies;
+	Node** adjList;
 
 public:
-	AdjacencyListGraph(Node nodes[], Edge edges[]);
+	AdjacencyListGraph(int iNumVertices);
 	~AdjacencyListGraph();
 
 	void addEdge(Edge* edge);
