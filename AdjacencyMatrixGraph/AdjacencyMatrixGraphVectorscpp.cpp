@@ -3,14 +3,32 @@
 #include <iostream>
 using namespace std;
 
+//Private Functions
+void AdjacencyMatrixGraphVectors::bfsSearch(int iStart, bool* visited) {
+    int vis;
+    vector<int> que;
+    visited[iStart] = true;
+    que.push_back(iStart);
+
+    while (!que.empty()) {
+
+        vis = que[0];
+        cout << vis << " ";
+        que.erase(que.begin());
+
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i] && adjMatrix[vis][i] != -1) {
+                que.push_back(i);
+                visited[i] = true;
+            }
+        }
+    }
+}
+
 //Public Fuctions
 AdjacencyMatrixGraphVectors::AdjacencyMatrixGraphVectors(int iVertices) {
     numVertices = iVertices;
-    adjMatrix = vector<vector<int>>();
-    for (int i = 0; i < numVertices; i++) {
-        for (int j = 0; j < numVertices; j++)
-            adjMatrix[i][j] = -1;
-    }
+    adjMatrix = vector<vector<int>>(numVertices, vector<int>(numVertices, -1));
 }
 AdjacencyMatrixGraphVectors::~AdjacencyMatrixGraphVectors() {
     
@@ -58,6 +76,7 @@ void AdjacencyMatrixGraphVectors::printMatrix() {
     cout << "    ";
     for (int i = 0; i < numVertices; i++)
         cout << "____";
+    cout << endl;
 }
 void AdjacencyMatrixGraphVectors::print() {
     cout << "Graph: " << endl;
@@ -70,7 +89,25 @@ void AdjacencyMatrixGraphVectors::print() {
         cout << endl;
     }
 }
-/*int main()
+void AdjacencyMatrixGraphVectors::bfs() {
+    //Array for Visited Nodes
+    bool* visited = new bool[numVertices];
+    //Mark all of them unvisited. 
+    for (int i = 0; i < numVertices; i++) {
+        visited[i] = false;
+    }
+    //Go through all nodes in case of disconnected graph
+    for (int i = 0; i < numVertices; i++) {
+        if (!visited[i])
+            bfsSearch(i, visited);
+    }
+}
+
+void AdjacencyMatrixGraphVectors::dfs() {
+
+}
+
+int main()
 {
     AdjacencyMatrixGraphVectors graph(5);
 
@@ -86,4 +123,5 @@ void AdjacencyMatrixGraphVectors::print() {
 
     graph.print();
     graph.printMatrix();
-}*/
+    graph.bfs();
+}

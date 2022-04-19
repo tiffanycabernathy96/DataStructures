@@ -6,6 +6,8 @@ class AdjacencyMatrixGraph {
 private:
 	int** adjMatrix;
 	int numVertices;
+
+	void bfsSearch(int iStart, bool* visited);
 public:
 	AdjacencyMatrixGraph(int iVertices);
 	~AdjacencyMatrixGraph();
@@ -15,4 +17,7 @@ public:
 
 	void printMatrix();
 	void print();
+
+	void bfs();
+	void dfs();
 };

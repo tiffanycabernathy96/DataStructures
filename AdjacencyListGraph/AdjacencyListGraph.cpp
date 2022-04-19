@@ -1,26 +1,52 @@
 //Tiffany Abernathy - Implementation of Adjacency List Graph using Arrays
 #include "AdjacencyListGraph.h"
 #include <iostream>
+#include <queue>
 using namespace std;
 
+//Private Functions
+void AdjacencyListGraph::bfsSearch(int iStart, bool* visited) {
+    Node* nTemp = adjList[iStart];
+    queue<Node*> que;
+    visited[iStart] = true;
+    que.push(nTemp);
+
+    while (!que.empty()) {
+
+        nTemp = que.front();
+        Edge* eTemp = nTemp->next;
+        cout << nTemp->name << " ";
+        que.pop();
+
+        while (eTemp) {
+            if (!visited[eTemp->end->name]) {
+                visited[eTemp->end->name] = true;
+                que.push(eTemp->end);
+            }
+            eTemp = eTemp->next;
+        }
+    }
+}
+
+//Public Functions
 AdjacencyListGraph::AdjacencyListGraph(int iNumVertices) {
     if (iNumVertices <= 0) {
         cout << "Enter a Valid Number of Vertices" << endl;
     }
     else {
         //Set the num vertices associated with the graph
-        numVerticies = iNumVertices;
+        numVertices = iNumVertices;
         //Initialize the graph with that number of verticies
-        adjList = new Node * [numVerticies];
+        adjList = new Node * [numVertices];
         //Initialize each node with the name as the index to make things easier. 
-        for (int i = 0; i < numVerticies; i++) {
+        for (int i = 0; i < numVertices; i++) {
             adjList[i] = new Node(i);
         }
     }
 }
     
 AdjacencyListGraph::~AdjacencyListGraph() {
-    for (int i = 0; i < numVerticies; i++) {
+    for (int i = 0; i < numVertices; i++) {
         while (adjList[i]->next) {
             //Delete each edge associated with this node
             Edge* temp = adjList[i]->next;
@@ -34,7 +60,7 @@ AdjacencyListGraph::~AdjacencyListGraph() {
 }
 
 void AdjacencyListGraph::addEdge(int start, int end, int weight) {
-    if (start < 0 || start >= numVerticies || end < 0 || end >= numVerticies) {
+    if (start < 0 || start >= numVertices || end < 0 || end >= numVertices) {
         cout << "Invalid Edge" << endl;
         return;
     }
@@ -69,7 +95,7 @@ void AdjacencyListGraph::addEdge(int start, int end, int weight) {
 void AdjacencyListGraph::deleteEdge(int start, int end, int weight) {
     Edge* parent = adjList[start]->next;
     //Confirm the root is not null and the inputted values are valid
-    if (parent && start > 0 && start < numVerticies && end > 0 && end < numVerticies) {
+    if (parent && start > 0 && start < numVertices && end > 0 && end < numVertices) {
         //The deleted edge is the root edge of the node
         if (parent->end->name == end && parent->weight == weight) {
             adjList[start]->next = parent->next;
@@ -94,7 +120,7 @@ void AdjacencyListGraph::deleteEdge(int start, int end, int weight) {
 }
 
 void AdjacencyListGraph::print() {
-    for (int i = 0; i < numVerticies; i++)
+    for (int i = 0; i < numVertices; i++)
     {
         if (!adjList[i]->next)
             continue;
@@ -104,6 +130,24 @@ void AdjacencyListGraph::print() {
             temp = temp->next;
         }
     }
+}
+
+void AdjacencyListGraph::bfs() {
+    //Array for Visited Nodes
+    bool* visited = new bool[numVertices];
+    //Mark all of them unvisited. 
+    for (int i = 0; i < numVertices; i++) {
+        visited[i] = false;
+    }
+    //Go through all nodes in case of disconnected graph
+    for (int i = 0; i < numVertices; i++) {
+        if (!visited[i])
+            bfsSearch(i, visited);
+    }
+}
+
+void AdjacencyListGraph::dfs() {
+
 }
 
 int main()
@@ -128,4 +172,6 @@ int main()
     cout << "Deleting the Root Edge of a Node [1,2]" << endl;
     graph.deleteEdge(1, 2, 10);
     graph.print();
+    cout << "BFS" << endl;
+    graph.bfs();
 }

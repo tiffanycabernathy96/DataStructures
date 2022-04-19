@@ -8,6 +8,8 @@ class AdjacencyMatrixGraphVectors {
 private:
 	vector<vector<int>> adjMatrix;
 	int numVertices;
+
+	void bfsSearch(int iStart, bool* visited);
 public:
 	AdjacencyMatrixGraphVectors(int iVertices);
 	~AdjacencyMatrixGraphVectors();
@@ -17,4 +19,7 @@ public:
 
 	void printMatrix();
 	void print();
+
+	void bfs();
+	void dfs();
 };

@@ -4,8 +4,12 @@
 class EdgeListGraph{
 	Edge** edges;
 	Node** nodes;
-	int numNodes;
+	int numVertices;
 	int numEdges;
+
+	void deleteEdges(int node);
+
+	void bfsSearch(int iStart, bool* visited);
 public:
 	EdgeListGraph(Node *iNodes, Edge *iEdges, int iNumNodes, int iNumEdges);
 	~EdgeListGraph();
@@ -15,9 +19,11 @@ public:
 
 	void addEdge(Edge* edge);
 	void deleteEdge(Edge* edge);
-	void deleteEdges(int node);
-
+	
 	void printByNodes();
 
 	void print();
+
+	void bfs();
+	void dfs();
 };

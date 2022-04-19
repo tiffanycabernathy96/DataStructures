@@ -6,6 +6,10 @@ using namespace std;
 class EdgeListGraphVectors {
 	vector<Node> nodes;
 	vector<Edge> edges;
+
+	void deleteEdges(int node);
+
+	void bfsSearch(int iStart, vector<bool> &visited);
 public:
 	EdgeListGraphVectors(vector<Node>& iNodes, vector<Edge>& iEdges);
 	~EdgeListGraphVectors();
@@ -15,9 +19,11 @@ public:
 
 	void addEdge(Edge edge);
 	void deleteEdge(Edge edge);
-	void deleteEdges(int node);
 
 	void printByNodes();
 
 	void print();
+
+	void bfs();
+	void dfs();
 };

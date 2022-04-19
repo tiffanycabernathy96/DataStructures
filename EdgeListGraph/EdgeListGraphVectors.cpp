@@ -1,7 +1,41 @@
 //Tiffany Abernathy - Implementation of Edge List Graph Using Vectors. Directed and Weighted. 
 #include "EdgeListGraphVectors.h"
 #include <iostream>
+#include <queue>
 
+//Private Functions
+void EdgeListGraphVectors::deleteEdges(int node) {
+	auto itr = edges.begin();
+	while (itr != edges.end()) {
+		if ((*itr).start == node || (*itr).end == node) {
+			itr = edges.erase(itr);
+		}
+		else
+			itr++;
+	}
+}
+
+
+void EdgeListGraphVectors::bfsSearch(int iStart, vector<bool>& visited) {
+	Node nTemp = nodes[iStart];
+	queue<Node> que;
+	visited[nTemp.name] = true;
+	que.push(nTemp);
+	while (!que.empty()) {
+		nTemp = que.front();
+		cout << nTemp.name << " ";
+		que.pop();
+		for (int j = 0; j < edges.size(); j++) {
+			if (!visited[edges[j].end] && edges[j].start == nodes[iStart].name) {
+				visited[edges[j].end] = true;
+				que.push(edges[j].end);
+			}
+		}
+	}
+}
+
+
+//Public functions
 EdgeListGraphVectors::EdgeListGraphVectors(vector<Node>& iNodes, vector<Edge>& iEdges) {
 	nodes = vector<Node>();
 	edges = vector<Edge>();
@@ -41,16 +75,6 @@ void EdgeListGraphVectors::deleteEdge(Edge edge) {
 		}
 	}
 }
-void EdgeListGraphVectors::deleteEdges(int node) {
-	auto itr = edges.begin();
-	while (itr != edges.end()) {
-		if ((*itr).start == node || (*itr).end == node) {
-			itr = edges.erase(itr);
-		}
-		else
-			itr++;
-	}
-}
 
 void EdgeListGraphVectors::printByNodes() {
 	cout << "Graph Edges by Node: " << endl;
@@ -70,25 +94,41 @@ void EdgeListGraphVectors::print() {
 	}
 	cout << endl;
 }
-
-int main()
-{
-	cout << "Adding Nodes 0 through 4" << endl;
-	vector<Node> nodes{ Node(0), Node(1), Node(2), Node(3), Node(4) };
-	cout << "Adding Starting Edges" << endl;
-	vector<Edge> edges{ Edge(0, 1, 5), Edge(1, 3, 10), Edge(1, 0, 6), Edge(2, 4, 8), Edge(3, 2, 1) };
-	EdgeListGraphVectors graph(nodes, edges);
-	graph.printByNodes();
-	cout << "Adding Node 5" << endl;
-	graph.addNode(5);
-	graph.printByNodes();
-	cout << "Adding Edge 5, 2 with weight 7" << endl;
-	graph.addEdge(Edge(5, 2, 7));
-	graph.printByNodes();
-	cout << "Deleting Node 1 and corresponding Edges" << endl;
-	cout << "Edges before Deletion" << endl;
-	graph.print();
-	graph.deleteNode(1);
-	cout << "Edges after Deletion" << endl;
-	graph.print();
+void EdgeListGraphVectors::bfs() {
+	//Array for Visited Nodes
+	vector<bool> visited = vector<bool>(nodes.size(), 0);
+	//Go through all nodes in case of disconnected graph
+	for (int i = 0; i < nodes.size(); i++) {
+		if (!visited[i]) {
+			bfsSearch(i, visited);
+		}
+	}
 }
+
+void EdgeListGraphVectors::dfs() {
+
+}
+
+//int main()
+//{
+//	cout << "Adding Nodes 0 through 4" << endl;
+//	vector<Node> nodes{ Node(0), Node(1), Node(2), Node(3), Node(4) };
+//	cout << "Adding Starting Edges" << endl;
+//	vector<Edge> edges{ Edge(0, 1, 5), Edge(1, 3, 10), Edge(1, 0, 6), Edge(2, 4, 8), Edge(3, 2, 1) };
+//	EdgeListGraphVectors graph(nodes, edges);
+//	graph.printByNodes();
+//	cout << "Adding Node 5" << endl;
+//	graph.addNode(5);
+//	graph.printByNodes();
+//	cout << "Adding Edge 5, 2 with weight 7" << endl;
+//	graph.addEdge(Edge(5, 2, 7));
+//	graph.printByNodes();
+//	//cout << "Deleting Node 1 and corresponding Edges" << endl;
+//	//cout << "Edges before Deletion" << endl;
+//	//graph.print();
+//	//graph.deleteNode(1);
+//	//cout << "Edges after Deletion" << endl;
+//	//graph.print();
+//
+//	graph.bfs();
+//}
