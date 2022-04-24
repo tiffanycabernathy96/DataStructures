@@ -1,5 +1,8 @@
 //Tiffany Abernathy - Red-Black Tree Implementation 
 #include "RedBlackTree.h"
+#include <iostream>
+#include <queue>
+using namespace std;
 
 TreeNode::TreeNode(int data=NULL, bool color=false) {
     //All parameters are optional to make empty nodes easy to create. Defaults to false - black. 

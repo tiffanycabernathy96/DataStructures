@@ -1,7 +1,6 @@
 #pragma once
-#include<iostream>
-#include <queue>
-using namespace std;
+#include "Tree.h"
+
 struct TreeNode {
 	int data;
 	bool color; 
@@ -10,7 +9,7 @@ struct TreeNode {
 	TreeNode* right;
 	TreeNode(int data, bool color);
 };
-#include "Tree.h"
+
 class RedBlackTree: public Tree {
 private:
 	TreeNode* root;
