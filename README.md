@@ -2,11 +2,11 @@
 Implementation of Various Data Structures 
 
 ## Currently Implemented Data Structures
-- Red-Black Tree
-- Trie Tree
-- Edge List Graph (Using Vectors and Arrays)
-- Adjacency List Graph
-- Adjacency Matrix Graph (Using Vectors and Arrays)
+- Red-Black Tree - Includes BFS and DFS Traversals
+- Trie Tree - Includes Boggle Game
+- Edge List Graph (Using Vectors and Arrays) - Includes BFS and DFS
+- Adjacency List Graph (Using Vectors and Arrays) - Includes BFS and DFS
+- Adjacency Matrix Graph (Using Vectors and Arrays) - Includes BFS and DFS
 - Hash Table (Using Arrays)
 - Double Linked List
 

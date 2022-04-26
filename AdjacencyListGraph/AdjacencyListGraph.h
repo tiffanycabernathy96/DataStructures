@@ -5,16 +5,17 @@ class AdjacencyListGraph{
 	int numVertices;
 	Node** adjList;
 
-	void bfsSearch(int iStart, bool* visited);
+	void bfsSearch(int iStart, bool* iVisited);
+	void dfsR(int iStart, bool* iVisited);
 public:
 	AdjacencyListGraph(int iNumVertices);
 	~AdjacencyListGraph();
 
-	void addEdge(int start, int end, int weight);
-	void deleteEdge(int start, int end, int weight);
+	void addEdge(int iStart, int iEnd, int iWeight);
+	void deleteEdge(int iStart, int iEnd, int iWeight);
 
 	void print();
 
-	void bfs();
-	void dfs();
+	void bfs(int iStart = -1);
+	void dfs(int iStart = -1);
 };

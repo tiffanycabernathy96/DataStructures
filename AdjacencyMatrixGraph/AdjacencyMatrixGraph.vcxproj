@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdjacencyMatrixGraph.cpp" />
-    <ClCompile Include="AdjacencyMatrixGraphVectorscpp.cpp" />
+    <ClCompile Include="AdjacencyMatrixGraphVectors.cpp" />
     <ClCompile Include="Graph.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,8 @@ private:
 	vector<vector<int>> adjMatrix;
 	int numVertices;
 
-	void bfsSearch(int iStart, bool* visited);
+	void bfsSearch(int iStart, vector<bool> *visited);
+	void dfsR(int iStart, vector<bool> *visited);
 public:
 	AdjacencyMatrixGraphVectors(int iVertices);
 	~AdjacencyMatrixGraphVectors();
@@ -20,6 +21,6 @@ public:
 	void printMatrix();
 	void print();
 
-	void bfs();
-	void dfs();
+	void bfs(int start = -1);
+	void dfs(int start = -1);
 };

@@ -1,13 +1,15 @@
 //Tiffany Abernathy - Implementation of Edge List Graph Using Vectors. Directed and Weighted. 
+//Implementation of BFS and DFS - Works for Disconnected and Connected Graphs. Optional Input for Start Value
+
 #include "EdgeListGraphVectors.h"
 #include <iostream>
 #include <queue>
 
 //Private Functions
-void EdgeListGraphVectors::deleteEdges(int node) {
+void EdgeListGraphVectors::deleteEdges(int iNode) {
 	auto itr = edges.begin();
 	while (itr != edges.end()) {
-		if ((*itr).start == node || (*itr).end == node) {
+		if ((*itr).start == iNode || (*itr).end == iNode) {
 			itr = edges.erase(itr);
 		}
 		else
@@ -15,25 +17,34 @@ void EdgeListGraphVectors::deleteEdges(int node) {
 	}
 }
 
-
-void EdgeListGraphVectors::bfsSearch(int iStart, vector<bool>& visited) {
+void EdgeListGraphVectors::bfsSearch(int iStart, vector<bool>& iVisited) {
 	Node nTemp = nodes[iStart];
-	queue<Node> que;
-	visited[nTemp.name] = true;
-	que.push(nTemp);
+	vector<int> que;
+	iVisited[nTemp.name] = true;
+	que.push_back(nTemp.name);
 	while (!que.empty()) {
 		nTemp = que.front();
 		cout << nTemp.name << " ";
-		que.pop();
+		que.erase(que.begin());
 		for (int j = 0; j < edges.size(); j++) {
-			if (!visited[edges[j].end] && edges[j].start == nodes[iStart].name) {
-				visited[edges[j].end] = true;
-				que.push(edges[j].end);
+			if (!iVisited[edges[j].end] && edges[j].start == nTemp.name) {
+				iVisited[edges[j].end] = true;
+				que.push_back(edges[j].end);
 			}
 		}
 	}
 }
 
+void EdgeListGraphVectors::dfsR(int iStart, vector<bool>& iVisited) {
+	Node nTemp = nodes[iStart];
+	iVisited[iStart] = true;
+	cout << iStart << " ";
+	for (int i = 0; i < edges.size(); i++) {
+		if (!iVisited[edges[i].end] && edges[i].start == nodes[iStart].name) {
+			dfsR(edges[i].end, iVisited);
+		}
+	}
+}
 
 //Public functions
 EdgeListGraphVectors::EdgeListGraphVectors(vector<Node>& iNodes, vector<Edge>& iEdges) {
@@ -46,29 +57,32 @@ EdgeListGraphVectors::EdgeListGraphVectors(vector<Node>& iNodes, vector<Edge>& i
 		edges.push_back(Edge(iEdges[i].start, iEdges[i].end, iEdges[i].weight));
 	}
 }
+
 EdgeListGraphVectors::~EdgeListGraphVectors() {
 	//Using Vectors Handles this.
 }
 
-void EdgeListGraphVectors::addNode(int node) {
-	nodes.push_back(Node(node));
+void EdgeListGraphVectors::addNode(int iNode) {
+	nodes.push_back(Node(iNode));
 }
-void EdgeListGraphVectors::deleteNode(int node) {
+
+void EdgeListGraphVectors::deleteNode(int iNode) {
 	for (int i = 0; i < nodes.size(); i++) {
-		if (nodes[i].name == node) {
+		if (nodes[i].name == iNode) {
 			swap(nodes[i], nodes[nodes.size()-1]);
 			nodes.pop_back();
 		}
 	}
-	deleteEdges(node);
+	deleteEdges(iNode);
 }
 
-void EdgeListGraphVectors::addEdge(Edge edge) {
-	edges.push_back(Edge(edge.start, edge.end, edge.weight));
+void EdgeListGraphVectors::addEdge(Edge iEdge) {
+	edges.push_back(Edge(iEdge.start, iEdge.end, iEdge.weight));
 }
-void EdgeListGraphVectors::deleteEdge(Edge edge) {
+
+void EdgeListGraphVectors::deleteEdge(Edge iEdge) {
 	for (int i = 0; i < edges.size(); i++) {
-		if (edges[i] == edge) {
+		if (edges[i] == iEdge) {
 			swap(nodes[i], nodes[nodes.size() - 1]);
 			nodes.pop_back();
 			return;
@@ -94,19 +108,41 @@ void EdgeListGraphVectors::print() {
 	}
 	cout << endl;
 }
-void EdgeListGraphVectors::bfs() {
-	//Array for Visited Nodes
-	vector<bool> visited = vector<bool>(nodes.size(), 0);
-	//Go through all nodes in case of disconnected graph
-	for (int i = 0; i < nodes.size(); i++) {
-		if (!visited[i]) {
-			bfsSearch(i, visited);
+
+void EdgeListGraphVectors::bfs(int iStart) {
+	//Vector for Visited Nodes
+	vector<bool> visited = vector<bool>(nodes.size(), false);
+
+	if (iStart != -1) {
+		//Perform BFS on the given start node
+		bfsSearch(iStart, visited);
+	}
+	else {
+		//Perform BFS - Handles Disconnected Graph
+		//Go through all nodes in case of disconnected graph
+		for (int i = 0; i < nodes.size(); i++) {
+			if (!visited[i])
+				bfsSearch(i, visited);
 		}
 	}
 }
 
-void EdgeListGraphVectors::dfs() {
+void EdgeListGraphVectors::dfs(int iStart) {
+	//Vector for Visited Nodes
+	vector<bool> visited = vector<bool>(nodes.size(), false);
 
+	if (iStart != -1) {
+		//Perform DFS on the given start node
+		dfsR(iStart, visited);
+	}
+	else {
+		//Perform DFS - Handles Disconnected Graph
+		//Go through all nodes in case of disconnected graph
+		for (int i = 0; i < nodes.size(); i++) {
+			if (!visited[i])
+				dfsR(i, visited);
+		}
+	}
 }
 
 //int main()
@@ -130,5 +166,32 @@ void EdgeListGraphVectors::dfs() {
 //	//cout << "Edges after Deletion" << endl;
 //	//graph.print();
 //
-//	graph.bfs();
+//	cout << endl << "Graph 2 - Showing DFS and BFS" << endl;
+//	vector<Node> nodes2{ Node(0), Node(1), Node(2), Node(3), Node(4), Node(5), Node(6), Node(7) };
+//	vector<Edge> edges2{ Edge(0, 4, 5), Edge(1, 2, 10), Edge(1, 5, 6), Edge(2, 1, 8), Edge(2, 5, 1), Edge(2, 6, 10), Edge(3, 1, 10), Edge(3, 5, 10), Edge(3, 7, 10), Edge(5, 6, 10),
+//					  Edge(6, 2, 10) , Edge(6, 4, 10) , Edge(7, 6, 10) };
+//	EdgeListGraphVectors graph2(nodes2, edges2);
+//
+//	graph2.print();
+//
+//	cout << endl << "BFS Searches - Ignoring Disconnects" << endl;
+//	cout << "BFS at 5" << endl;
+//	graph2.bfs(5);
+//	//5 6 2 4 1
+//	cout << endl << "BFS at 1" << endl;
+//	graph2.bfs(1);
+//	//1 2 5 6 4
+//	cout << endl << "BFS at 3" << endl;
+//	graph2.bfs(3);
+//	//3 1 5 7 2 6 4
+//	cout << endl << endl << "DFS Searches - Ignoring Disconnects" << endl;
+//	cout << "DFS at 5" << endl;
+//	graph2.dfs(5);
+//	//5 6 2 1 4
+//	cout << endl << "DFS at 1" << endl;
+//	graph2.dfs(1);
+//	//1 2 5 6 4
+//	cout << endl << "DFS at 3" << endl;
+//	graph2.dfs(3);
+//	//3 1 2 5 6 4 7
 //}

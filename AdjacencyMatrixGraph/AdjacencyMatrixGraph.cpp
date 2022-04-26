@@ -1,14 +1,16 @@
 //Tiffany Abernathy - Implementation of Adjacency Matrix Graph Using Arrays. Directed and Weighted. 
+//Implementation of BFS and DFS - Works for Disconnected and Connected Graphs. Optional Input for Start Value
+
 #include "AdjacencyMatrixGraph.h"
 #include <iostream>
 #include <queue>
 using namespace std;
 
 //Private Functions
-void AdjacencyMatrixGraph::bfsSearch(int iStart, bool* visited) {
+void AdjacencyMatrixGraph::bfsSearch(int iStart, bool* iVisited) {
     int vis;
     queue<int> que;
-    visited[iStart] = true;
+    iVisited[iStart] = true;
     que.push(iStart);
 
     while (!que.empty()) {
@@ -18,10 +20,20 @@ void AdjacencyMatrixGraph::bfsSearch(int iStart, bool* visited) {
         que.pop();
 
         for (int i = 0; i < numVertices; i++) {
-            if (!visited[i] && adjMatrix[vis][i] != -1) {
+            if (!iVisited[i] && adjMatrix[vis][i] != -1) {
                 que.push(i);
-                visited[i] = true;
+                iVisited[i] = true;
             }
+        }
+    }
+}
+
+void AdjacencyMatrixGraph::dfsR(int iStart, bool* iVisited) {
+    iVisited[iStart] = true;
+    cout << iStart << " ";
+    for (int i = 0; i < numVertices; i++) {
+        if (adjMatrix[iStart][i] != -1 && !iVisited[i]) {
+            dfsR(i, iVisited);
         }
     }
 }
@@ -37,6 +49,7 @@ AdjacencyMatrixGraph::AdjacencyMatrixGraph(int iVertices) {
             adjMatrix[i][j] = -1;
     }
 }
+
 AdjacencyMatrixGraph::~AdjacencyMatrixGraph() {
     for (int i = 0; i < numVertices; i++) {
         delete[] adjMatrix[i];
@@ -52,6 +65,7 @@ void AdjacencyMatrixGraph::addEdge(Edge iEdge) {
     else
         cout << "Invalid Edge" << endl;
 }
+
 void AdjacencyMatrixGraph::deleteEdge(Edge iEdge) {
     if (iEdge.start >= 0 && iEdge.end < numVertices) {
         adjMatrix[iEdge.start][iEdge.end] = -1;
@@ -60,6 +74,7 @@ void AdjacencyMatrixGraph::deleteEdge(Edge iEdge) {
     else
         cout << "Invalid Edge" << endl;
 }
+
 void AdjacencyMatrixGraph::printMatrix() {
     cout << "Graph: " << endl;
     cout << "    ";
@@ -88,6 +103,7 @@ void AdjacencyMatrixGraph::printMatrix() {
         cout << "____";
     cout << endl;
 }
+
 void AdjacencyMatrixGraph::print() {
     cout << "Graph: " << endl;
     for (int i = 0; i < numVertices; i++) {
@@ -100,39 +116,86 @@ void AdjacencyMatrixGraph::print() {
     }
 }
 
-void AdjacencyMatrixGraph::bfs() {
+void AdjacencyMatrixGraph::bfs(int iStart) {
     //Array for Visited Nodes
     bool* visited = new bool[numVertices];
     //Mark all of them unvisited. 
     for (int i = 0; i < numVertices; i++) {
         visited[i] = false;
     }
-    //Go through all nodes in case of disconnected graph
-    for (int i = 0; i < numVertices; i++) {
-        if (!visited[i])
-            bfsSearch(i, visited);
+    if (iStart != -1) {
+        //Perform BFS on the given start node
+        bfsSearch(iStart, visited);
+    }
+    else {
+        //Perform BFS - Handles Disconnected Graph
+        //Go through all nodes in case of disconnected graph
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i])
+                bfsSearch(i, visited);
+        }
     }
 }
 
-void AdjacencyMatrixGraph::dfs() {
-
+void AdjacencyMatrixGraph::dfs(int iStart) {
+    //Array for Visited Nodes
+    bool* visited = new bool[numVertices];
+    //Mark all of them unvisited.
+    for (int i = 0; i < numVertices; i++) {
+        visited[i] = false;
+    }
+    if (iStart != -1) {
+        //Perform DFS on the given start node
+        dfsR(iStart, visited);
+    }
+    else {
+        //Perform DFS - Handles Disconnected Graph
+        //Go through all nodes in case of disconnected graph
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i])
+                dfsR(i, visited);
+        }
+    }
 }
 
 //int main()
 //{
-//    AdjacencyMatrixGraph graph(5);
-//
-//    graph.addEdge(Edge(0, 0, 10));
-//    graph.addEdge(Edge(0, 4, 10));
-//    graph.addEdge(Edge(1, 1, 10));
-//    graph.addEdge(Edge(1, 3, 10));
-//    graph.addEdge(Edge(2, 2, 10));
+//    cout << endl << "Showing DFS and BFS" << endl;
+//    AdjacencyMatrixGraph graph(8);
+//    graph.addEdge(Edge(0, 4, 15));
+//    graph.addEdge(Edge(1, 2, 11));
+//    graph.addEdge(Edge(1, 5, 10));
+//    graph.addEdge(Edge(2, 1, 18));
+//    graph.addEdge(Edge(2, 5, 29));
+//    graph.addEdge(Edge(2, 6, 23));
 //    graph.addEdge(Edge(3, 1, 10));
-//    graph.addEdge(Edge(3, 3, 10));
-//    graph.addEdge(Edge(4, 0, 10));
-//    graph.addEdge(Edge(4, 4, 10));
+//    graph.addEdge(Edge(3, 5, 16));
+//    graph.addEdge(Edge(3, 7, 17));
+//    graph.addEdge(Edge(5, 6, 13));
+//    graph.addEdge(Edge(6, 2, 14));
+//    graph.addEdge(Edge(6, 4, 10));
+//    graph.addEdge(Edge(7, 6, 25));
 //
-//    graph.print();
 //    graph.printMatrix();
-//    graph.bfs();
+//
+//    cout << endl << "BFS Searches - Ignoring Disconnects" << endl;
+//    cout << "BFS at 5" << endl;
+//    graph.bfs(5);
+//    //5 6 2 4 1
+//    cout << endl << "BFS at 1" << endl;
+//    graph.bfs(1);
+//    //1 2 5 6 4
+//    cout << endl << "BFS at 3" << endl;
+//    graph.bfs(3);
+//    //3 1 5 7 2 6 4
+//    cout << endl << endl << "DFS Searches - Ignoring Disconnects" << endl;
+//    cout << "DFS at 5" << endl;
+//    graph.dfs(5);
+//    //5 6 2 1 4
+//    cout << endl << "DFS at 1" << endl;
+//    graph.dfs(1);
+//    //1 2 5 6 4
+//    cout << endl << "DFS at 3" << endl;
+//    graph.dfs(3);
+//    //3 1 2 5 6 4 7
 //}

@@ -7,23 +7,24 @@ class EdgeListGraph{
 	int numVertices;
 	int numEdges;
 
-	void deleteEdges(int node);
+	void deleteEdges(int iNode);
 
-	void bfsSearch(int iStart, bool* visited);
+	void bfsSearch(int iStart, bool* iVisited);
+	void dfsR(int iStart, bool* iVisited);
 public:
 	EdgeListGraph(Node *iNodes, Edge *iEdges, int iNumNodes, int iNumEdges);
 	~EdgeListGraph();
 
-	void addNode(int node);
-	void deleteNode(int node);
+	void addNode(int iNode);
+	void deleteNode(int iNode);
 
-	void addEdge(Edge* edge);
-	void deleteEdge(Edge* edge);
+	void addEdge(Edge* iEdge);
+	void deleteEdge(Edge* iEdge);
 	
 	void printByNodes();
 
 	void print();
 
-	void bfs();
-	void dfs();
+	void bfs(int iStart = -1);
+	void dfs(int iStart = -1);
 };

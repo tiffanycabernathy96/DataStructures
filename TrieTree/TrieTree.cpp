@@ -87,6 +87,15 @@ void printGrid() {
     cout << "| B | S | T | Y |" << endl;
     cout << "| A | W | I | X |" << endl;
 }
+bool confirmLetters(string key) {
+    for (char c : key) {
+        ////65 to 90 or 97 to 122
+        if (c < 65 || (c > 90 && c < 97) || c > 122) {
+            return false;
+        }
+    }
+    return true;
+}
 
 int main()
 {
@@ -116,8 +125,8 @@ int main()
         string word;
         if (choice == 1) {
             cout << "Please Enter a Word. All Words are Between 3 and 16 letters" << endl;
-            cin >> word;
-            while (word.empty() || word.size() < 3 || word.size() > 16) {
+            cin >> word; 
+            while (word.empty() || word.size() < 3 || word.size() > 16 || !confirmLetters(word)) {
                 cout << endl << "Please Enter a Valid Word Between the Size of 3 and 16 Letters" << endl;
                 cin >> word;
             }

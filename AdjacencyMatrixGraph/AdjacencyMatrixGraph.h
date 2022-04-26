@@ -7,7 +7,8 @@ private:
 	int** adjMatrix;
 	int numVertices;
 
-	void bfsSearch(int iStart, bool* visited);
+	void bfsSearch(int iStart, bool* iVisited);
+	void dfsR(int iStart, bool* iVisited);
 public:
 	AdjacencyMatrixGraph(int iVertices);
 	~AdjacencyMatrixGraph();
@@ -18,6 +19,6 @@ public:
 	void printMatrix();
 	void print();
 
-	void bfs();
-	void dfs();
+	void bfs(int iStart = -1);
+	void dfs(int iStart = -1);
 };
