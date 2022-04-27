@@ -1,161 +1,223 @@
 //Tiffany Abernathy - Red-Black Tree Implementation 
+//Implementation of BFS and DFS Traversals
+
 #include "RedBlackTree.h"
 #include <iostream>
 #include <queue>
 using namespace std;
 
-TreeNode::TreeNode(int data=NULL, bool color=false) {
-    //All parameters are optional to make empty nodes easy to create. Defaults to false - black. 
-    this->data = data;
-    this->color = color; 
+TreeNode::TreeNode(int iData=NULL, bool iColor=false) {
+    //All parameters are optional to make empty iNodes easy to create. Defaults to false - black. 
+    this->data = iData;
+    this->color = iColor; 
     this->left = nullptr;
     this->right = nullptr;
     this->parent = nullptr;
 }
+
 //Private Functions
-void RedBlackTree::deleteTree(TreeNode* node) {
-    if (node != NIL) {
-        deleteTree(node->left);
-        deleteTree(node->right);
-        delete node;
+void RedBlackTree::deleteTree(TreeNode* iNode) {
+    if (iNode != NIL) {
+        deleteTree(iNode->left);
+        deleteTree(iNode->right);
+        delete iNode;
     }
 }
-void RedBlackTree::insertRebalance(TreeNode* node) {
+
+void RedBlackTree::insertRebalance(TreeNode* iNode) {
     TreeNode* temp;
-    while (node->parent->color) {
-        if (node->parent == node->parent->parent->right) {
-            temp = node->parent->parent->left;
+    while (iNode->parent->color) {
+        if (iNode->parent == iNode->parent->parent->right) {
+            temp = iNode->parent->parent->left;
             if (temp->color) {
                 temp->color = false;
-                node->parent->color = false;
-                node->parent->parent->color = true;
-                node = node->parent->parent;
+                iNode->parent->color = false;
+                iNode->parent->parent->color = true;
+                iNode = iNode->parent->parent;
             }
             else {
-                if (node == node->parent->left) {
-                    node = node->parent;
-                    rightRotate(node);
+                if (iNode == iNode->parent->left) {
+                    iNode = iNode->parent;
+                    rightRotate(iNode);
                 }
-                node->parent->color = false;
-                node->parent->parent->color = true;
-                leftRotate(node->parent->parent);
+                iNode->parent->color = false;
+                iNode->parent->parent->color = true;
+                leftRotate(iNode->parent->parent);
             }
         }
         else {
-            temp = node->parent->parent->right;
+            temp = iNode->parent->parent->right;
             if (temp->color) {
                 temp->color = false;
-                node->parent->color = false;
-                node->parent->parent->color = true;
-                node = node->parent->parent;
+                iNode->parent->color = false;
+                iNode->parent->parent->color = true;
+                iNode = iNode->parent->parent;
             }
             else {
-                if (node == node->parent->right) {
-                    node = node->parent;
-                    leftRotate(node);
+                if (iNode == iNode->parent->right) {
+                    iNode = iNode->parent;
+                    leftRotate(iNode);
                 }
-                node->parent->color = false;
-                node->parent->parent->color = true;
-                rightRotate(node->parent->parent);
+                iNode->parent->color = false;
+                iNode->parent->parent->color = true;
+                rightRotate(iNode->parent->parent);
             }
         }
-        if (node == this->root)
+        if (iNode == this->root)
             break;
     }
     this->root->color = false;
 }
-void RedBlackTree::deleteRebalance(TreeNode* node) {
+
+void RedBlackTree::deleteRebalance(TreeNode* iNode) {
     TreeNode* temp;
-    while (node != this->root && !node->color) {
-        if (node == node->parent->left) {
-            temp = node->parent->right;
+    while (iNode != this->root && !iNode->color) {
+        if (iNode == iNode->parent->left) {
+            temp = iNode->parent->right;
             if (temp->color) {
                 temp->color = false;
-                node->parent->color = true;
-                leftRotate(node->parent);
-                temp = node->parent->right;
+                iNode->parent->color = true;
+                leftRotate(iNode->parent);
+                temp = iNode->parent->right;
             }
 
             if (!temp->left->color && !temp->right->color) {
                 temp->color = true;
-                node = node->parent;
+                iNode = iNode->parent;
             }
             else {
                 if (!temp->right->color) {
                     temp->left->color = false;
                     temp->color = true;
                     rightRotate(temp);
-                    temp = node->parent->right;
+                    temp = iNode->parent->right;
                 }
-                temp->color = node->parent->color;
-                node->parent->color = false;
+                temp->color = iNode->parent->color;
+                iNode->parent->color = false;
                 temp->right->color = false;
-                leftRotate(node->parent);
-                node = this->root;
+                leftRotate(iNode->parent);
+                iNode = this->root;
             }
         }
         else {
-            temp = node->parent->left;
+            temp = iNode->parent->left;
             if (temp->color) {
                 temp->color = false;
-                node->parent->color = true;
-                rightRotate(node->parent);
-                temp = node->parent->left;
+                iNode->parent->color = true;
+                rightRotate(iNode->parent);
+                temp = iNode->parent->left;
             }
 
             if (!temp->left->color && !temp->right->color) {
                 temp->color = true;
-                node = node->parent;
+                iNode = iNode->parent;
             }
             else {
                 if (!temp->left->color) {
                     temp->right->color = false;
                     temp->color = true;
                     leftRotate(temp);
-                    temp = node->parent->left;
+                    temp = iNode->parent->left;
                 }
 
-                temp->color = node->parent->color;
-                node->parent->color = false;
+                temp->color = iNode->parent->color;
+                iNode->parent->color = false;
                 temp->left->color = false;
-                rightRotate(node->parent);
-                node = this->root;
+                rightRotate(iNode->parent);
+                iNode = this->root;
             }
         }
     }
-    node->color = false;
+    iNode->color = false;
 }
-void RedBlackTree::replace(TreeNode* oldN, TreeNode* newN) {
-    if (!oldN->parent)
-        this->root = newN;
-    else if (oldN == oldN->parent->left)
-        oldN->parent->left = newN;
-    else
-        oldN->parent->right = newN;
 
-    newN->parent = oldN->parent;
+void RedBlackTree::replace(TreeNode* iOldN, TreeNode* iNewN) {
+    if (!iOldN->parent)
+        root = iNewN;
+    else if (iOldN == iOldN->parent->left)
+        iOldN->parent->left = iNewN;
+    else
+        iOldN->parent->right = iNewN;
+
+    iNewN->parent = iOldN->parent;
 }
-TreeNode* RedBlackTree::searchTreeR(TreeNode* node, int data) {
-    if(node == NIL || data == node->data)
-        return node;
-    if (data < node->data)
-        return searchTreeR(node->left, data);
-    return searchTreeR(node->right, data);
+
+void RedBlackTree::leftRotate(TreeNode* iNode) {
+    //Take the right child of iNode
+    TreeNode* riNode = iNode->right;
+    //Set the right child of iNode to the left child of riNode
+    iNode->right = riNode->left;
+
+    //If riNodes left child is not null, set it's parent to iNode
+    if (riNode->left != NIL)
+        riNode->left->parent = iNode;
+    //riNode is now in iNodes old spot so set riNode to iNode's parent. 
+    riNode->parent = iNode->parent;
+    //If iNode was the root i.e. iNode->parent is null then set the root to riNode.
+    if (!iNode->parent)
+        this->root = riNode;
+    //If iNode is his parent's left child, set iNode's parent's left child to riNode
+    else if (iNode == iNode->parent->left)
+        iNode->parent->left = riNode;
+    //Otherwise set parent's right child riNode. 
+    else
+        iNode->parent->right = riNode;
+
+    //Set riNode's left to iNode
+    riNode->left = iNode;
+    //Set iNode's parent to riNode
+    iNode->parent = riNode;
 }
-void RedBlackTree::printR(TreeNode* node, string indent, bool last) {
-    if (node != NIL) {
-        cout << indent;
-        if (last) {
+
+void RedBlackTree::rightRotate(TreeNode* iNode) {
+    //Take the left child of the iNode
+    TreeNode* liNode = iNode->left;
+    //Set the left child of iNode to the right child of liNode
+    iNode->left = liNode->right;
+
+    //liNode's right child is not null, set it's parent to iNode
+    if (liNode->right != NIL)
+        liNode->right->parent = iNode;
+    //liNode is now in iNodes old spot so set liNode to iNode's parent.
+    liNode->parent = iNode->parent;
+    //If iNode was the root i.e. iNode->parent is null then set the root to liNode.
+    if (!iNode->parent)
+        this->root = liNode;
+    //If iNode is the right child of his parent, set the parent's right child to liNode 
+    else if (iNode == iNode->parent->right)
+        iNode->parent->right = liNode;
+    //Otherwise set the paren't left child to liNode
+    else
+        iNode->parent->left = liNode;
+
+    //Set liNode's right to iNode
+    liNode->right = iNode;
+    //Set iNode's parent to liNode
+    iNode->parent = liNode;
+}
+
+TreeNode* RedBlackTree::searchTreeR(TreeNode* iNode, int iData) {
+    if(iNode == NIL || iData == iNode->data)
+        return iNode;
+    if (iData < iNode->data)
+        return searchTreeR(iNode->left, iData);
+    return searchTreeR(iNode->right, iData);
+}
+
+void RedBlackTree::printR(TreeNode* iNode, string iIndent, bool iLast) {
+    if (iNode != NIL) {
+        cout << iIndent;
+        if (iLast) {
             cout << "R----";
-            indent += "   ";
+            iIndent += "   ";
         }
         else {
             cout << "L----";
-            indent += "|  ";
+            iIndent += "|  ";
         }
-        cout << "Data: " << node->data << " - Color: " << (node->color ? "Red" : "False") << endl;
-        printR(node->left, indent, false);
-        printR(node->right, indent, true);
+        cout << "Data: " << iNode->data << " - Color: " << (iNode->color ? "Red" : "False") << endl;
+        printR(iNode->left, iIndent, false);
+        printR(iNode->right, iIndent, true);
     }
 }
 
@@ -165,133 +227,84 @@ RedBlackTree::RedBlackTree() {
     NIL = new TreeNode();
     root = NIL;
 }
+
 RedBlackTree::~RedBlackTree() {
     deleteTree(root);
 }
 
 TreeNode* RedBlackTree::getRoot() {
-    return this->root;
+    return root;
 }
 
-TreeNode* RedBlackTree::minimum(TreeNode* node) {
-    TreeNode* temp = node;
+TreeNode* RedBlackTree::minimum(TreeNode* iNode) {
+    TreeNode* temp = iNode;
     while (temp->left != NIL) {
         temp = temp->left;
     }
     return temp;
 }
-TreeNode* RedBlackTree::maximum(TreeNode* node) {
-    TreeNode* temp = node;
+
+TreeNode* RedBlackTree::maximum(TreeNode* iNode) {
+    TreeNode* temp = iNode;
     while (temp->right != NIL) {
         temp = temp->right;
     }
     return temp;
 }
 
-void RedBlackTree::leftRotate(TreeNode* node) {
-    //Take the right child of node
-    TreeNode* rNode = node->right;
-    //Set the right child of node to the left child of rNode
-    node->right = rNode->left;
-
-    //If rNodes left child is not null, set it's parent to node
-    if (rNode->left != NIL)
-        rNode->left->parent = node;
-    //rNode is now in nodes old spot so set rNode to node's parent. 
-    rNode->parent = node->parent;
-    //If node was the root i.e. node->parent is null then set the root to rNode.
-    if (!node->parent)
-        this->root = rNode;
-    //If node is his parent's left child, set node's parent's left child to rNode
-    else if (node == node->parent->left)
-        node->parent->left = rNode;
-    //Otherwise set parent's right child rNode. 
-    else
-        node->parent->right = rNode;
-
-    //Set rNode's left to node
-    rNode->left = node;
-    //Set node's parent to rNode
-    node->parent = rNode;
-}
-void RedBlackTree::rightRotate(TreeNode* node) {
-    //Take the left child of the node
-    TreeNode* lNode = node->left;
-    //Set the left child of node to the right child of lNode
-    node->left = lNode->right;
-
-    //lNode's right child is not null, set it's parent to node
-    if (lNode->right != NIL)
-        lNode->right->parent = node;
-    //lNode is now in nodes old spot so set lNode to node's parent.
-    lNode->parent = node->parent;
-    //If node was the root i.e. node->parent is null then set the root to lNode.
-    if (!node->parent)
-        this->root = lNode;
-    //If node is the right child of his parent, set the parent's right child to lNode 
-    else if (node == node->parent->right)
-        node->parent->right = lNode;
-    //Otherwise set the paren't left child to lNode
-    else
-        node->parent->left = lNode;
-
-    //Set lNode's right to node
-    lNode->right = node;
-    //Set node's parent to lNode
-    node->parent = lNode;
-}
-void RedBlackTree::insert(int data) {
-    //Create the new node with the data and it is red so true
-    TreeNode* newNode = new TreeNode(data, true);
-    newNode->left = NIL;
-    newNode->right = NIL;
-    //Place the new node in the tree where it should be based on value
-    TreeNode* parentNode = nullptr;
+void RedBlackTree::insert(int iData) {
+    //Create the new iNode with the data and it is red so true
+    TreeNode* newiNode = new TreeNode(iData, true);
+    newiNode->left = NIL;
+    newiNode->right = NIL;
+    //Place the new iNode in the tree where it should be based on value
+    TreeNode* parentiNode = nullptr;
     TreeNode* temp = this->root;
 
     while (temp != NIL) {
-        parentNode = temp;
-        if (data < temp->data)
+        parentiNode = temp;
+        if (iData < temp->data)
             temp = temp->left;
         else
             temp = temp->right;
     }
-    //Set the newNode's parent.
-    newNode->parent = parentNode;
-    //This is the first node so it becomes the root
-    if (!parentNode) {
-        this->root = newNode;
+    //Set the newiNode's parent.
+    newiNode->parent = parentiNode;
+    //This is the first iNode so it becomes the root
+    if (!parentiNode) {
+        this->root = newiNode;
         //The Root must be black
-        newNode->color = false;
+        newiNode->color = false;
         return;
     }
-    //if data is less than the parentNode's data then make it the left child
-    else if (data < parentNode->data)
-        parentNode->left = newNode;
-    //Otherwise parentNode's right is newNode
+    //if data is less than the parentiNode's data then make it the left child
+    else if (iData < parentiNode->data)
+        parentiNode->left = newiNode;
+    //Otherwise parentiNode's right is newiNode
     else
-        parentNode->right = newNode;
+        parentiNode->right = newiNode;
 
     //If this is the first child of the root then red-black tree rules are held up.
-    if (!newNode->parent->parent)
+    if (!newiNode->parent->parent)
         return;
 
     //Otherwise need to fix the tree
-    insertRebalance(newNode);
+    insertRebalance(newiNode);
 }
-void RedBlackTree::remove(int data) {
+
+void RedBlackTree::remove(int iData) {
     TreeNode* removedN = NIL, *temp1, *temp2;
 
-    //Find the node in the tree
-    removedN = searchTreeR(this->root, data);
+    //Find the iNode in the tree
+    removedN = searchTreeR(this->root, iData);
 
-    //Confirm Node was found
+    //Confirm iNode was found
     if (!removedN) {
-        cout << "Node Not Found" << endl;
+        cout << "iNode Not Found" << endl;
         return;
     }
 
-    //Start process of removing/reconnecting nodes
+    //Start process of removing/reconnecting iNodes
     temp1 = removedN;
     bool temp1Color = temp1->color;
 
@@ -323,7 +336,7 @@ void RedBlackTree::remove(int data) {
         temp1->color = removedN->color;
     }
 
-    //Can safely delete the node now
+    //Can safely delete the iNode now
     delete removedN;
     //Fix the tree is needed
     if (!temp1Color)
@@ -331,38 +344,40 @@ void RedBlackTree::remove(int data) {
 }
 
 //DFS Traversals
-void RedBlackTree::printPreOrder(TreeNode* node) {
+void RedBlackTree::printPreOrder(TreeNode* iNode) {
     //Root - Left - Right
-    if (node != NIL) {
-        cout << node->data << " ";
-        printPreOrder(node->left);
-        printPreOrder(node->right);
+    if (iNode != NIL) {
+        cout << iNode->data << " ";
+        printPreOrder(iNode->left);
+        printPreOrder(iNode->right);
     }
 }
-void RedBlackTree::printInOrder(TreeNode* node) {
+
+void RedBlackTree::printInOrder(TreeNode* iNode) {
     //Left - Root - Right
-    if (node != NIL) {
-        printInOrder(node->left);
-        cout << node->data << " ";
-        printInOrder(node->right);
+    if (iNode != NIL) {
+        printInOrder(iNode->left);
+        cout << iNode->data << " ";
+        printInOrder(iNode->right);
     }
 }
-void RedBlackTree::printPostOrder(TreeNode* node) {
+
+void RedBlackTree::printPostOrder(TreeNode* iNode) {
     //Left - Right - Root
-    if (node != NIL) {
-        printPostOrder(node->left);
-        printPostOrder(node->right);
-        cout << node->data << " ";
+    if (iNode != NIL) {
+        printPostOrder(iNode->left);
+        printPostOrder(iNode->right);
+        cout << iNode->data << " ";
     }
 }
 
 //BFS Traversal
-void RedBlackTree::printLevelOrder(TreeNode* node) {
-    if (!node)
+void RedBlackTree::printLevelOrder(TreeNode* iNode) {
+    if (!iNode)
         return;
     queue<TreeNode*> q;
-    q.push(node);
-    while (q.empty() == false) {
+    q.push(iNode);
+    while (!q.empty()) {
         TreeNode* temp = q.front();
         cout << temp->data << " ";
         q.pop();
@@ -375,9 +390,10 @@ void RedBlackTree::printLevelOrder(TreeNode* node) {
     }
 }
 
-TreeNode* RedBlackTree::searchTree(int data) {
-    return searchTreeR(this->root, data);
+TreeNode* RedBlackTree::searchTree(int iData) {
+    return searchTreeR(this->root, iData);
 }
+
 void RedBlackTree::printTree() {
     if (this->root) {
         printR(this->root, "", true);

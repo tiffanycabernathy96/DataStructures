@@ -1,5 +1,7 @@
 #pragma once
 #include "Tree.h"
+#include <iostream>
+using namespace std;
 
 struct TreeNode {
 	int data;
@@ -7,7 +9,7 @@ struct TreeNode {
 	TreeNode* parent;
 	TreeNode* left;
 	TreeNode* right;
-	TreeNode(int data, bool color);
+	TreeNode(int iData, bool iColor);
 };
 
 class RedBlackTree: public Tree {
@@ -18,33 +20,35 @@ private:
 
 	void insertRebalance(TreeNode* node);
 	void deleteRebalance(TreeNode* node);
-	void replace(TreeNode* oldN, TreeNode* newN);
+	void replace(TreeNode* iOldN, TreeNode* iNewN);
 
-	TreeNode* searchTreeR(TreeNode* node, int data);
-	void printR(TreeNode* node, string indent, bool last);
+	void leftRotate(TreeNode* iNode);
+	void rightRotate(TreeNode* iNode);
+
+	TreeNode* searchTreeR(TreeNode* iNode, int iData);
+	void printR(TreeNode* iNode, string iIndent, bool iLast);
 public:
 	RedBlackTree();
 	~RedBlackTree();
 
 	TreeNode* getRoot();
 
-	TreeNode* minimum(TreeNode* node);
-	TreeNode* maximum(TreeNode* node);
+	TreeNode* minimum(TreeNode* iNode);
+	TreeNode* maximum(TreeNode* iNode);
 
-	void leftRotate(TreeNode* node);
-	void rightRotate(TreeNode* node);
-	void insert(int data);
-	void remove(int data);
+	void insert(int iData);
+	void remove(int iData);
 
 	//DFS Traversals
-	void printPreOrder(TreeNode* node);
-	void printInOrder(TreeNode* node);
-	void printPostOrder(TreeNode* node);
+	void printPreOrder(TreeNode* iNode);
+	void printInOrder(TreeNode* iNode);
+	void printPostOrder(TreeNode* iNode);
 
 	//BFS Traversal
-	void printLevelOrder(TreeNode* node);
+	void printLevelOrder(TreeNode* iNode);
 
-	TreeNode* searchTree(int data);
+	TreeNode* searchTree(int iData);
+
 	void printTree();
 	
 };

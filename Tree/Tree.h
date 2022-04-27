@@ -1,7 +1,5 @@
 //Tiffany Abernathy - Interface for Tree Implementations
 #pragma once
-#include <iostream>
-using namespace std;
 
 struct TreeNode;
 
