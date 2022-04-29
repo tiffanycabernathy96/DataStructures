@@ -1,5 +1,5 @@
-//Tiffany Abernathy - Red-Black Tree Implementation 
-//Implementation of BFS and DFS Traversals
+// Tiffany Abernathy - Red-Black Tree Implementation 
+// Implementation of BFS and DFS Traversals
 
 #include "RedBlackTree.h"
 #include <iostream>
@@ -171,29 +171,29 @@ void RedBlackTree::leftRotate(TreeNode* iNode) {
 
 void RedBlackTree::rightRotate(TreeNode* iNode) {
     //Take the left child of the iNode
-    TreeNode* liNode = iNode->left;
+    TreeNode* lNode = iNode->left;
     //Set the left child of iNode to the right child of liNode
-    iNode->left = liNode->right;
+    iNode->left = lNode->right;
 
     //liNode's right child is not null, set it's parent to iNode
-    if (liNode->right != NIL)
-        liNode->right->parent = iNode;
+    if (lNode->right != NIL)
+        lNode->right->parent = iNode;
     //liNode is now in iNodes old spot so set liNode to iNode's parent.
-    liNode->parent = iNode->parent;
+    lNode->parent = iNode->parent;
     //If iNode was the root i.e. iNode->parent is null then set the root to liNode.
     if (!iNode->parent)
-        this->root = liNode;
+        this->root = lNode;
     //If iNode is the right child of his parent, set the parent's right child to liNode 
     else if (iNode == iNode->parent->right)
-        iNode->parent->right = liNode;
+        iNode->parent->right = lNode;
     //Otherwise set the paren't left child to liNode
     else
-        iNode->parent->left = liNode;
+        iNode->parent->left = lNode;
 
     //Set liNode's right to iNode
-    liNode->right = iNode;
+    lNode->right = iNode;
     //Set iNode's parent to liNode
-    iNode->parent = liNode;
+    iNode->parent = lNode;
 }
 
 TreeNode* RedBlackTree::searchTreeR(TreeNode* iNode, int iData) {
@@ -254,42 +254,42 @@ TreeNode* RedBlackTree::maximum(TreeNode* iNode) {
 
 void RedBlackTree::insert(int iData) {
     //Create the new iNode with the data and it is red so true
-    TreeNode* newiNode = new TreeNode(iData, true);
-    newiNode->left = NIL;
-    newiNode->right = NIL;
+    TreeNode* newNode = new TreeNode(iData, true);
+    newNode->left = NIL;
+    newNode->right = NIL;
     //Place the new iNode in the tree where it should be based on value
-    TreeNode* parentiNode = nullptr;
+    TreeNode* parentNode = nullptr;
     TreeNode* temp = this->root;
 
     while (temp != NIL) {
-        parentiNode = temp;
+        parentNode = temp;
         if (iData < temp->data)
             temp = temp->left;
         else
             temp = temp->right;
     }
     //Set the newiNode's parent.
-    newiNode->parent = parentiNode;
+    newNode->parent = parentNode;
     //This is the first iNode so it becomes the root
-    if (!parentiNode) {
-        this->root = newiNode;
+    if (!parentNode) {
+        this->root = newNode;
         //The Root must be black
-        newiNode->color = false;
+        newNode->color = false;
         return;
     }
     //if data is less than the parentiNode's data then make it the left child
-    else if (iData < parentiNode->data)
-        parentiNode->left = newiNode;
+    else if (iData < parentNode->data)
+        parentNode->left = newNode;
     //Otherwise parentiNode's right is newiNode
     else
-        parentiNode->right = newiNode;
+        parentNode->right = newNode;
 
     //If this is the first child of the root then red-black tree rules are held up.
-    if (!newiNode->parent->parent)
+    if (!newNode->parent->parent)
         return;
 
     //Otherwise need to fix the tree
-    insertRebalance(newiNode);
+    insertRebalance(newNode);
 }
 
 void RedBlackTree::remove(int iData) {
@@ -395,8 +395,8 @@ TreeNode* RedBlackTree::searchTree(int iData) {
 }
 
 void RedBlackTree::printTree() {
-    if (this->root) {
-        printR(this->root, "", true);
+    if (root) {
+        printR(root, "", true);
     }
 }
 

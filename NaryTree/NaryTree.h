@@ -1,6 +1,7 @@
 #pragma once
 #include "Tree.h"
 #include <vector>
+#include <string>
 using namespace std;
 
 struct TreeNode {
@@ -8,16 +9,15 @@ struct TreeNode {
 	vector<TreeNode> children;
 	TreeNode(int iData);
 	void addChild(int iData);
+	void addChildren(vector<int>& iData);
 };
 
-class NaryTree : public Tree {
-	TreeNode* root;
+class NaryTree {
+	void printR(TreeNode* iNode, string iIndent);
 public:
-	NaryTree();
+	TreeNode* root;
+	NaryTree(int iData);
 	~NaryTree();
-
-	void insert(int iData);
-	void remove(int iData);
 
 	//DFS Traversals
 	void printPreOrder(TreeNode* iNode);
@@ -26,8 +26,6 @@ public:
 
 	//BFS Traversal
 	void printLevelOrder(TreeNode* iNode);
-
-	TreeNode* searchTree(int iData);
 
 	void printTree();
 };
