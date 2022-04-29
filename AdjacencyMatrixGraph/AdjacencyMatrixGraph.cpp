@@ -90,7 +90,10 @@ void AdjacencyMatrixGraph::printMatrix() {
         cout <<"  " << i << "|";
         for (int j = 0; j < numVertices; j++) {
             if (adjMatrix[i][j] != -1) {
-                cout << " " << adjMatrix[i][j] << "|";
+                if (adjMatrix[i][j] % 10 == adjMatrix[i][j])
+                    cout << "  " << adjMatrix[i][j] << "|";
+                else
+                    cout << " " << adjMatrix[i][j] << "|";
             }
             else {
                 cout << "   |";

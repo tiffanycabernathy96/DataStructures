@@ -16,6 +16,7 @@ public:
 	void deleteEdge(int iStart, int iEnd, int iWeight);
 
 	void print();
+	void printPretty();
 
 	void bfs(int iStart = -1);
 	void dfs(int iStart = -1);

@@ -148,6 +148,21 @@ void AdjacencyListGraph::print() {
     }
 }
 
+void AdjacencyListGraph::printPretty() {
+    for (int i = 0; i < numVertices; i++) {
+        cout << "| " << i << " |";
+        if (adjList[i]->next)
+        {
+            Edge* temp = adjList[i]->next;
+            while (temp) {
+                cout << " -> | " << temp->end->name << " | " << temp->weight << " |";
+                temp = temp->next;
+            }
+        }
+        cout << endl;
+    }
+}
+
 void AdjacencyListGraph::bfs(int iStart) {
 
     //Array for Visited Nodes
@@ -191,66 +206,66 @@ void AdjacencyListGraph::dfs(int iStart) {
     }
 }
 
-int main()
-{
-    cout << "Graph 1 - Showing Ability to Add/Delete Edges" << endl;
-    AdjacencyListGraph graph(5);
-    cout << "Adding Edges: [1,2], [1,4], [1,3]" << endl;
-    graph.addEdge(1, 2, 10);
-    graph.addEdge(1, 4, 8);
-    graph.addEdge(1, 3, 7);
-    graph.print();
-    cout << "Adding Edges: [2,2], [2,1]" << endl;
-    graph.addEdge(2, 2, 4);
-    graph.addEdge(2, 1, 5);
-    graph.print();
-    cout << "Deleting Edge: [1,4]" << endl;
-    graph.deleteEdge(1, 3, 7);
-    graph.print();
-    cout << "Deleting an Edge that Doesn't Exist" << endl;
-    graph.deleteEdge(3, 2, 9);
-    cout << "Attempting to Delete an Edge but the Weights don't Match" << endl;
-    graph.deleteEdge(1, 2, 7);
-    cout << "Deleting the Root Edge of a Node [1,2]" << endl;
-    graph.deleteEdge(1, 2, 10);
-    graph.print();
-
-    cout << endl << "Graph 2 - Showing DFS and BFS" << endl;
-    AdjacencyListGraph graph2(8);
-    graph2.addEdge(0, 4, 5);
-    graph2.addEdge(1, 2, 5);
-    graph2.addEdge(1, 5, 5);
-    graph2.addEdge(2, 1, 5);
-    graph2.addEdge(2, 5, 5);
-    graph2.addEdge(2, 6, 5);
-    graph2.addEdge(3, 1, 5);
-    graph2.addEdge(3, 5, 5);
-    graph2.addEdge(3, 7, 5);
-    graph2.addEdge(5, 6, 5);
-    graph2.addEdge(6, 2, 5);
-    graph2.addEdge(6, 4, 5);
-    graph2.addEdge(7, 6, 5);
-
-    graph2.print();
-
-    cout << endl << "BFS Searches - Ignoring Disconnects" << endl;
-    cout << "BFS at 5" << endl;
-    graph2.bfs(5);
-    //5 6 2 4 1
-    cout << endl << "BFS at 1" << endl;
-    graph2.bfs(1);
-    //1 2 5 6 4
-    cout << endl << "BFS at 3" << endl;
-    graph2.bfs(3);
-    //3 1 5 7 2 6 4
-    cout << endl << endl << "DFS Searches - Ignoring Disconnects" << endl;
-    cout << "DFS at 5" << endl;
-    graph2.dfs(5);
-    //5 6 2 1 4
-    cout << endl << "DFS at 1" << endl;
-    graph2.dfs(1);
-    //1 2 5 6 4
-    cout << endl << "DFS at 3" << endl;
-    graph2.dfs(3);
-    //3 1 2 5 6 4 7
-}
+//int main()
+//{
+//    cout << "Graph 1 - Showing Ability to Add/Delete Edges" << endl;
+//    AdjacencyListGraph graph(5);
+//    cout << "Adding Edges: [1,2], [1,4], [1,3]" << endl;
+//    graph.addEdge(1, 2, 10);
+//    graph.addEdge(1, 4, 8);
+//    graph.addEdge(1, 3, 7);
+//    graph.print();
+//    cout << "Adding Edges: [2,2], [2,1]" << endl;
+//    graph.addEdge(2, 2, 4);
+//    graph.addEdge(2, 1, 5);
+//    graph.print();
+//    cout << "Deleting Edge: [1,4]" << endl;
+//    graph.deleteEdge(1, 3, 7);
+//    graph.print();
+//    cout << "Deleting an Edge that Doesn't Exist" << endl;
+//    graph.deleteEdge(3, 2, 9);
+//    cout << "Attempting to Delete an Edge but the Weights don't Match" << endl;
+//    graph.deleteEdge(1, 2, 7);
+//    cout << "Deleting the Root Edge of a Node [1,2]" << endl;
+//    graph.deleteEdge(1, 2, 10);
+//    graph.print();
+//
+//    cout << endl << "Graph 2 - Showing DFS and BFS" << endl;
+//    AdjacencyListGraph graph2(8);
+//    graph2.addEdge(0, 4, 5);
+//    graph2.addEdge(1, 2, 5);
+//    graph2.addEdge(1, 5, 5);
+//    graph2.addEdge(2, 1, 5);
+//    graph2.addEdge(2, 5, 5);
+//    graph2.addEdge(2, 6, 5);
+//    graph2.addEdge(3, 1, 5);
+//    graph2.addEdge(3, 5, 5);
+//    graph2.addEdge(3, 7, 5);
+//    graph2.addEdge(5, 6, 5);
+//    graph2.addEdge(6, 2, 5);
+//    graph2.addEdge(6, 4, 5);
+//    graph2.addEdge(7, 6, 5);
+//
+//    graph2.printPretty();
+//
+//    cout << endl << "BFS Searches - Ignoring Disconnects" << endl;
+//    cout << "BFS at 5" << endl;
+//    graph2.bfs(5);
+//    //5 6 2 4 1
+//    cout << endl << "BFS at 1" << endl;
+//    graph2.bfs(1);
+//    //1 2 5 6 4
+//    cout << endl << "BFS at 3" << endl;
+//    graph2.bfs(3);
+//    //3 1 5 7 2 6 4
+//    cout << endl << endl << "DFS Searches - Ignoring Disconnects" << endl;
+//    cout << "DFS at 5" << endl;
+//    graph2.dfs(5);
+//    //5 6 2 1 4
+//    cout << endl << "DFS at 1" << endl;
+//    graph2.dfs(1);
+//    //1 2 5 6 4
+//    cout << endl << "DFS at 3" << endl;
+//    graph2.dfs(3);
+//    //3 1 2 5 6 4 7
+//}
