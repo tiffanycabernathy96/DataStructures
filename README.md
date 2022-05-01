@@ -12,5 +12,6 @@ Implementation of Various Data Structures
 - Adjacency Matrix Graph (Using Vectors and Arrays) - Includes BFS and DFS
 - Hash Table (Using Arrays)
 - Double Linked List
+- Min and Max Heap (Using Vectors)
 
 ## Inprogress Data Structures
